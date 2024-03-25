@@ -1,0 +1,26 @@
+.wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.lol {
+    width: 400px;
+    height: 500px;
+    background-color: orangered;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.h3 {
+    text-align: center;
+    padding: 10px 0 10px 0;
+}
+
+.search {
+    width: 300px;
+    height: 40px;
+    background-color: white;
+    right: 0;
+    left: 0;
+}

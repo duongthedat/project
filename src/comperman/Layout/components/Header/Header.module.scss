@@ -23,6 +23,11 @@
     width: 60%;
 }
 
+.search-result {
+    width: 800px;
+    margin-right: 80px;
+}
+
 .search {
     flex: 1;
     height: 30px;
@@ -47,22 +52,6 @@
     background-color: white;
     border-width: 1px;
     cursor: pointer;
-}
-
-.history-search {
-    width: 700px;
-    height: 100px;
-    position: absolute;
-    background-color: white;
-    margin-top: 33px;
-    border-radius: 3px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    list-style-type: none;
-    display: none;
-}
-
-.input:focus ~ .history-search {
-    display: block;
 }
 
 .linhe {
@@ -93,6 +82,7 @@
     font-size: 21px;
     color: black;
     cursor: pointer;
+    position: relative;
 }
 
 .menu {
@@ -135,4 +125,17 @@
 
 .dd-vcl p:hover {
     background-color: #ccc;
+}
+
+.gach {
+    text-decoration: none;
+}
+
+.gach .shopping-cart .number-sc {
+    font-size: 12px;
+    background-color: red;
+    color: white;
+    width: 18px;
+    position: absolute;
+    border-radius: 50%;
 }

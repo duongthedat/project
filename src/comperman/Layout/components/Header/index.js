@@ -1,84 +1,60 @@
 import classNames from 'classnames/bind';
 import styles from './Header.module.scss';
 import { Link } from 'react-router-dom';
-import { useReducer, useRef, useState } from 'react';
-import { CiSearch } from 'react-icons/ci';
+import { useEffect, useRef, useState } from 'react';
 import { CiShoppingCart } from 'react-icons/ci';
 import { FaBars } from 'react-icons/fa';
 import { useOutsideAlerter } from './vclcc';
-
-const nices = {
-    job: '',
-    jobs: [],
-};
-
-const SET_JOB = 'set_job';
-const ADD_JOB = 'add_job';
-const DELETE_JOB = 'delete_job';
-
-const addJob = (payload) => {
-    return {
-        type: ADD_JOB,
-        payload,
-    };
-};
-
-const setJob = (payload) => {
-    return {
-        type: SET_JOB,
-        payload,
-    };
-};
-
-const deleteJob = (payload) => {
-    return {
-        type: DELETE_JOB,
-        payload,
-    };
-};
-
-const reducer = (state, action) => {
-    switch (action.type) {
-        case SET_JOB:
-            return {
-                ...state,
-                job: action.payload,
-            };
-        case ADD_JOB:
-            return {
-                ...state,
-                jobs: [...state.jobs, action.payload],
-            };
-        case DELETE_JOB:
-            const newJob = [...state.jobs];
-            newJob.splice(action.payload, 1);
-            return {
-                ...state,
-                jobs: newJob,
-            };
-        default:
-            throw new Error('vcl...');
-    }
-};
+import { useData } from '~/Context/DataContext';
+import Tippy from '@tippyjs/react/headless';
+import { Wrapper } from '~/comperman/Popper';
+import AccountItem from '~/comperman/AccountItem';
+import { FiX } from 'react-icons/fi';
+import request from '~/utils/request';
 
 const cx = classNames.bind(styles);
 
-function Header(props) {
-    const [state, dispatch] = useReducer(reducer, nices);
-    const { job, jobs } = state;
+function Header() {
+    const [searchValue, setSearchValue] = useState('');
+    const [searchResult, setSearchResult] = useState([]);
+    const [showResult, setShowResult] = useState(true);
+
+    useEffect(() => {
+        if (!searchValue.trim()) {
+            return;
+        }
+
+        request
+            .get(`users/search`, {
+                params: {
+                    q: searchValue,
+                    type: 'less',
+                },
+            })
+            .then((res) => {
+                setSearchResult(res.data.data);
+            });
+    }, [searchValue]);
 
     const niceRef = useRef();
 
-    const handleSubmit = () => {
-        dispatch(addJob(job));
-        dispatch(setJob(''));
+    const handleClear = () => {
+        setSearchValue('');
+        setSearchResult([]);
+        setShowResult(false);
         niceRef.current.focus();
+    };
+
+    const handleHideResult = () => {
+        setShowResult(false);
     };
 
     const [isModalOpened, setIsModalOpened] = useState(false);
     const modalRef = useRef(null);
 
     useOutsideAlerter(modalRef, () => setIsModalOpened(false));
+
+    const { cart } = useData();
 
     return (
         <header className={cx('wrapper')}>
@@ -88,32 +64,42 @@ function Header(props) {
                         <img className={cx('logo')} alt="" src="https://ghichu.vn/img/logo-ghichu.png" />
                     </div>
                 </Link>
-                <div className={cx('search')}>
-                    <input
-                        ref={niceRef}
-                        className={cx('input')}
-                        placeholder="Nhập để tìm kiếm sản phẩm..."
-                        value={job}
-                        onChange={(e) => dispatch(setJob(e.target.value))}
-                    />
-                    <button className={cx('button')} onClick={handleSubmit}>
-                        <CiSearch />
-                    </button>
-                    <div className={cx('history-search')}>
-                        {jobs.map((job, index) => (
-                            <li className={cx('linhe')} key={index}>
-                                {job}
-                                <span className={cx('span')} onClick={() => dispatch(deleteJob(index))}>
-                                    &times;
-                                </span>
-                            </li>
-                        ))}
+                <Tippy
+                    interactive
+                    visible={showResult && searchResult.length > 0}
+                    render={(attrs) => (
+                        <div className={cx('search-result')} tabIndex="-1" {...attrs}>
+                            <Wrapper>
+                                <h3 className={cx('search-title')}>Account</h3>
+                                {searchResult.map((result) => (
+                                    <AccountItem key={result.id} data={result} />
+                                ))}
+                            </Wrapper>
+                        </div>
+                    )}
+                    onClickOutside={handleHideResult}
+                >
+                    <div className={cx('search')}>
+                        <input
+                            ref={niceRef}
+                            value={searchValue}
+                            spellCheck={false}
+                            onChange={(e) => setSearchValue(e.target.value)}
+                            onFocus={() => setShowResult(true)}
+                            className={cx('input')}
+                            placeholder="Nhập để tìm kiếm sản phẩm..."
+                        />
+                        {!!searchValue && (
+                            <button className={cx('button')} onClick={handleClear}>
+                                <FiX />
+                            </button>
+                        )}
                     </div>
-                </div>
-                <Link to="/shoppingcart">
+                </Tippy>
+                <Link to="/shoppingcart" className={cx('gach')}>
                     <div className={cx('shopping-cart')}>
                         <CiShoppingCart />
-                        <sup>{props.count}</sup>
+                        <sup className={cx('number-sc')}>{cart.length}</sup>
                     </div>
                 </Link>
                 <div className={cx('menu')}>

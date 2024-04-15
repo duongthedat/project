@@ -4,6 +4,10 @@ import classNames from 'classnames/bind';
 import styles from '~/pages/Home/Home.module.scss';
 import React from 'react';
 import Slider from 'react-slick';
+import { useData } from '~/Context/DataContext';
+import { Link } from 'react-router-dom/dist';
+import { CiShoppingCart } from 'react-icons/ci';
+import { useState } from 'react';
 
 const cx = classNames.bind(styles);
 function SampleNextArrow(props) {
@@ -43,7 +47,7 @@ function SamplePrevArrow(props) {
     );
 }
 
-function Home({ product, addToCart }) {
+function Home() {
     var settings = {
         dots: true,
         infinite: true,
@@ -56,6 +60,16 @@ function Home({ product, addToCart }) {
         prevArrow: <SamplePrevArrow />,
         appendDots: (dots) => <ul style={{ marginBottom: '27px' }}>{dots}</ul>,
     };
+
+    const { product, addToCart } = useData();
+    const [currentPage, setCurrentPage] = useState(1);
+    const productsPerPage = 5;
+
+    const indexOfLastProduct = currentPage * productsPerPage;
+    const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+    const currentProducts = product.slice(indexOfFirstProduct, indexOfLastProduct);
+
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     return (
         <div className={cx('wrapper')}>
@@ -107,21 +121,42 @@ function Home({ product, addToCart }) {
             </div>
 
             <div className={cx('flex')}>
-                {product.map((productItem, productIndex) => {
+                {currentProducts.map((productItem, productIndex) => {
                     return (
-                        <div key={productIndex} style={{ width: '33%' }}>
+                        <div className={cx('product-list')} key={productIndex} style={{ width: '19%' }}>
                             <div className={cx('product-item')}>
-                                <img src={productItem.url} width="100%" />
-                                <p>
-                                    {productItem.name} | {productItem.category}{' '}
-                                </p>
-                                <p> {productItem.seller} </p>
-                                <p> Rs. {productItem.price} /-</p>
-                                <button onClick={() => addToCart(productItem)}>Add To Cart</button>
+                                <Link to="/item" className={cx('hanghoa')}>
+                                    <img src={productItem.url} width="100%" />
+                                    <p className={cx('product-p')}>
+                                        {productItem.name} | {productItem.category}{' '}
+                                    </p>
+                                    <p className={cx('product-p')}> {productItem.seller} </p>
+                                    <p className={cx('product-total')}> TOTAL : {productItem.price}$</p>
+                                </Link>
+                                <div className={cx('cccccccc')}>
+                                    <Link to="/null">
+                                        <button className={cx('product-buy')}>BUY NOW</button>
+                                    </Link>
+                                    <button className={cx('product-button')} onClick={() => addToCart(productItem)}>
+                                        <CiShoppingCart />
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     );
                 })}
+            </div>
+
+            <div className={cx('chuyentrang')}>
+                <ul className={cx('pagination')}>
+                    {[...Array(Math.ceil(product.length / productsPerPage)).keys()].map((pageNumber) => (
+                        <li key={pageNumber} className={cx('page-item')}>
+                            <button onClick={() => paginate(pageNumber + 1)} className={cx('page-link')}>
+                                {pageNumber + 1}
+                            </button>
+                        </li>
+                    ))}
+                </ul>
             </div>
         </div>
     );

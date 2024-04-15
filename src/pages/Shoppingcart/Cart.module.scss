@@ -1,3 +1,23 @@
 .nice {
-    color: red;
+    display: flex;
+    justify-content: center;
+}
+
+.main {
+    width: 1150px;
+    font-size: 15px;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+.total {
+    margin-top: auto;
 }

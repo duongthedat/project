@@ -5,12 +5,21 @@ import App from '~/App';
 import reportWebVitals from './reportWebVitals';
 import GlobalStyles from '~/comperman/GlobalStyle';
 
+// import store from './reduxlogin/store';
+// import { Provider } from 'react-redux';
+// import { checkLoginStatus } from './reduxlogin/authActions';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
+// store.dispatch(checkLoginStatus());
+
 root.render(
     <React.StrictMode>
+        {/* <Provider store={store}> */}
         <GlobalStyles>
             <App />
         </GlobalStyles>
+        {/* </Provider> */}
     </React.StrictMode>,
 );
 

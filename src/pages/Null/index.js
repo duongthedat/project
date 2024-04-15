@@ -1,11 +1,7 @@
 import { Link } from 'react-router-dom';
 
 function Null() {
-    return (
-        <Link to="/following">
-            <button>null</button>
-        </Link>
-    );
+    return <h1>Mua luon</h1>;
 }
 
 export default Null;

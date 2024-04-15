@@ -1,0 +1,34 @@
+.wrapper {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    background-color: #fef6f5;
+}
+
+.inner {
+    width: 1150px;
+    display: flex;
+    min-height: 560px;
+    background-color: white;
+}
+
+.inner-img {
+    width: 40%;
+    padding: 15px;
+}
+
+.inner-content {
+    flex: 1;
+}
+
+.nice {
+    text-align: center;
+}
+
+.slick-dot-img {
+    border: 2px solid transparent; // Border mặc định
+}
+
+.slick-dot-img.active {
+    border-color: black; // Border khi active
+}

@@ -1,0 +1,24 @@
+.wrapper {
+    display: flex;
+}
+
+.wrapper:hover {
+    background-color: #ccc;
+}
+
+.avatar {
+    width: 40px;
+    height: 43px;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    padding-left: 10px;
+}
+
+.username {
+    font-size: 12px;
+    opacity: 0.5;
+    font-style: italic;
+}

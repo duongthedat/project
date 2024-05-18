@@ -139,3 +139,21 @@
     position: absolute;
     border-radius: 50%;
 }
+
+// mobile
+
+@media (max-width: 767px) {
+    .wrapper {
+        width: 100%;
+    }
+
+    .vcl {
+        text-align: center;
+    }
+
+    .search-result {
+        width: 430px;
+        margin-left: 145px;
+        margin-top: -8px;
+    }
+}

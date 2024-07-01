@@ -21,7 +21,7 @@ function Dangky() {
         // Cập nhật state formData với giá trị nhập mới của người dùng.
         setFormData({ ...formData, [name]: value });
 
-        // Kiểm tra dữ liệu nhập của trường này và cập nhật trạng thái lỗi nếu cần.
+        // Kiểm tra dữ liệu nhập của trường này và cập nhật trạng thái lỗi nếu cần nice.
         validateField(name, value);
     };
 
